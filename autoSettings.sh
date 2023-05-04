@@ -9,6 +9,7 @@ ZshAutoSuggestions="https://github.com/zsh-users/zsh-autosuggestions"
 ZshHistorySubStringSearch="https://github.com/zsh-users/zsh-history-substring-search"
 ZshSyntaxHighLighting="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 Powerlevel10k="https://github.com/romkatv/powerlevel10k.git"
+Nvm="https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh"
 
 choses=("install" "exit")
 
@@ -33,6 +34,35 @@ installPlugins() {
     echo -e "\e[32mInstalling $Powerlevel10k ....\e[0m"
     git clone --depth=1 $Powerlevel10k $ThemePath_pow
   fi
+}
+
+installNvm() {
+  if command -v node >/dev/null 2>&1; then
+    echo "\e[32mHi, you already have node, we will jump! You can chose by youself...\e[0m"
+  fi
+  select chose in "${choses[@]}"; do
+    case $chose in
+    "install")
+      echo -e "\e[32mstart automatic intall for you\e[0m"
+      (curl -o- $Nvm | bash) &
+      wait $!
+      source ~/.zshrc
+      set -e
+      nvm install --lts
+      npm install pnpm -g
+      node -v && pnpm -v
+      set +e
+      break
+      ;;
+    "exit")
+      echo -e "\e[34mYou need to install by yourself\e[0m"
+      exit 1
+      ;;
+    *)
+      echo -e "\e[31mInvalid entry\e[0m"
+      ;;
+    esac
+  done
 }
 
 if ! command -v git >/dev/null 2>&1; then
@@ -63,12 +93,12 @@ if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
     "install")
       echo -e "\e[32mstart automatic intall for you\e[0m"
       (
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        sh -c "$(curl -fsSL $OhMyZSH)"
       ) &
       break
       ;;
     "exit")
-      echo -e "\e[34mYou need to install Oh-my-zsh by yourself\e[0m"
+      echo -e "\e[34mYou need to install by yourself\e[0m"
       exit 1
       ;;
     *)
@@ -82,8 +112,15 @@ fi
 wait
 
 if installPlugins; then
-  echo -e "\e[42mComplete plugin download\e[0m"
+  echo -e "\e[42;30mComplete plugin download\e[0m"
 fi
 
 curl -o ~/.zshrc "${Root}.zshrc"
 curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
+
+# Install nvm for node
+
+if installNvm; then
+  echo -e "\e[42;30mComplete nvm and pnpm download\e[0m"
+  echo -e "Please exec \e[42msource ~/.zshrc\e[0m"
+fi
