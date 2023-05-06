@@ -65,6 +65,18 @@ installNvm() {
   done
 }
 
+installTmux() {
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo -e "\e[32mHi, you don't yet have tmux, we will exit!...\e[0m"
+    exit 1
+  fi
+
+  echo -e "\e[31m Let's start to install .tmux.conf and its plugins.\e[0m"
+  curl -o ~/.tmux.conf "${Root}.tmux.conf"
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  echo -e "\e[31mDone. But you must open tmux, and use 'Ctrl-a' + 'Shift-i' to install others plugins.\e[0m"
+}
+
 if ! command -v git >/dev/null 2>&1; then
   echo -e "\e[31mPlease install git at first.\e[0m"
   exit 1
@@ -111,16 +123,45 @@ fi
 
 wait
 
-if installPlugins; then
-  echo -e "\e[42;30mComplete plugin download\e[0m"
+read -p "Do you want to install nvm to zsh and p10k config? Please intput (y/n)" answer
+if [ "$answer" = "y" ]; then
+  if installPlugins; then
+    curl -o ~/.zshrc "${Root}.zshrc"
+    curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
+    echo -e "\e[42;30mComplete plugin download\e[0m"
+  else
+    echo "\e[31mExcution failed! Please view the question!\e[0m"
+  fi
+else
+  echo -e "Continue...."
 fi
-
-curl -o ~/.zshrc "${Root}.zshrc"
-curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
 
 # Install nvm for node
 
-if installNvm; then
-  echo -e "\e[42;30mComplete nvm and pnpm download\e[0m"
-  echo -e "Please exec \e[42msource ~/.zshrc\e[0m"
+read -p "Do you want to install nvm to manage node config? Please intput (y/n)" answer
+
+if [ "$answer" = "y" ]; then
+  if installNvm; then
+    echo -e "\e[42;30mComplete nvm and pnpm download\e[0m"
+    echo -e "Please exec \e[42msource ~/.zshrc\e[0m"
+  else
+    echo "\e[31mExcution failed! Please view the question!\e[0m"
+  fi
+else
+  echo -e "Continue....."
+fi
+
+# Install tmux
+
+read -p "Do you want to install tmux config? Please intput (y/n)" answer
+
+if [ "$answer" = "y" ]; then
+  echo -e "\e[32mStart....\e[0m"
+  if installTmux; then
+    echo -e "\e[32mComplete tmux download.\e[0m"
+  else
+    echo "\e[31mExcution failed! Please view the question!\e[0m"
+  fi
+else
+  echo -e "Countine...."
 fi
