@@ -18,19 +18,19 @@ installPlugins() {
         local pluginsPath_sea="${Custom}/plugins/zsh-history-substring-search"
         local PluginsPath_hig="${Custom}/plugins/zsh-syntax-highlighting"
         local ThemePath_pow="${Custom}/themes/powerlevel10k"
-        if [ ! -d $pluginsPath_sug ]; then
+        if [ ! -d "$pluginsPath_sug" ]; then
                 echo -e "\e[32mInstalling $ZshAutoSuggestions ....\e[0m"
                 git clone --depth=1 $ZshAutoSuggestions $pluginsPath_sug
         fi
-        if [ ! -d $pluginsPath_sea ]; then
+        if [ ! -d "$pluginsPath_sea" ]; then
                 echo -e "\e[32mInstalling $ZshHistorySubStringSearch ....\e[0m"
                 git clone --depth=1 $ZshHistorySubStringSearch $pluginsPath_sea
         fi
-        if [ ! -d $PluginsPath_hig ]; then
+        if [ ! -d "$PluginsPath_hig" ]; then
                 echo -e "\e[32mInstalling $ZshSyntaxHighLighting ....\e[0m"
                 git clone --depth=1 $ZshSyntaxHighLighting $PluginsPath_hig
         fi
-        if [ ! -d $ThemePath_pow ]; then
+        if [ ! -d "$ThemePath_pow" ]; then
                 echo -e "\e[32mInstalling $Powerlevel10k ....\e[0m"
                 git clone --depth=1 $Powerlevel10k $ThemePath_pow
         fi
@@ -107,6 +107,7 @@ if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
                         (
                                 sh -c "$(curl -fsSL $OhMyZSH)"
                         ) &
+                        wait $!
                         break
                         ;;
                 "exit")
@@ -120,8 +121,6 @@ if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
                 esac
         done
 fi
-
-wait
 
 read -p "\e[32mDo you want to install p10k config? Please intput (y/n)\e[0m" answer
 if [ "$answer" = "y" ]; then
