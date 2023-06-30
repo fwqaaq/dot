@@ -4,7 +4,6 @@ type bash &>/dev/null && shtype=bash || shtype=sh
 
 OhMyZSH="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 Root="https://raw.githubusercontent.com/fwqaaq/Nvim/main/"
-Custom="$ZSH/custom"
 ZshAutoSuggestions="https://github.com/zsh-users/zsh-autosuggestions"
 ZshHistorySubStringSearch="https://github.com/zsh-users/zsh-history-substring-search"
 ZshSyntaxHighLighting="https://github.com/zsh-users/zsh-syntax-highlighting.git"
@@ -26,6 +25,13 @@ red() {
 }
 
 installPlugins() {
+        if [ -n "$ZSH" ]; then
+                Custom="$ZSH/custom"
+        else
+                red "Not found ZSH!!!"
+                exit 1
+        fi
+
         local pluginsPath_sug="${Custom}/plugins/zsh-autosuggestions"
         local pluginsPath_sea="${Custom}/plugins/zsh-history-substring-search"
         local PluginsPath_hig="${Custom}/plugins/zsh-syntax-highlighting"
@@ -108,46 +114,34 @@ if [[ -n "$SHELL" && "${SHELL##*/}" != "zsh" ]]; then
         fi
 fi
 
+green "Do you want to install .zshrc and p10k config? And, it's necessary. Please intput (y/n)"
+read answer
+
+if [ "$answer" = "y" ]; then
+        curl -o ~/.zshrc "${Root}.zshrc"
+        curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
+        echo -e "\e[42;30mComplete plugin download\e[0m"
+        red "Excution failed! Please review the question!"
+else
+        red "exit...."
+        exit 1
+fi
+
 if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
         green "              You need to install oh-my-zsh, you can chose 1 or 2"
         green "              1, it can automatic intall for you"
         green "              2, then by youself by manually, shell will be exitem"
-        select chose in "${choses[@]}"; do
-                case $chose in
-                "install")
-                        green "start automatic intall for you"
-                        (
-                                sh -c "$(curl -fsSL $OhMyZSH)"
-                        ) &
-                        wait $!
-                        break
-                        ;;
-                "exit")
-                        yellow "You need to install by yourself"
-                        exit 1
-                        ;;
-                *)
-                        red "Invalid entry"
-                        break
-                        ;;
-                esac
-        done
+
+        green "start automatic intall for you"
+        (
+                sh -c "$(curl -fsSL $OhMyZSH)"
+        ) &
+        wait $!
 fi
 
-green "Do you want to install p10k config? Please intput (y/n)"
-read answer
-
-if [ "$answer" = "y" ]; then
-        if installPlugins; then
-                curl -o ~/.zshrc "${Root}.zshrc"
-                curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
-                echo -e "\e[42;30mComplete plugin download\e[0m"
-        else
-                red "Excution failed! Please view the question!"
-        fi
-else
-        green "Continue...."
-fi
+# Download plugins
+source ~/.zshrc
+installPlugins
 
 # Install nvm for node
 green "Do you want to install nvm to manage node config? Please intput (y/n)"
@@ -179,4 +173,4 @@ else
         green "Countine...."
 fi
 
-red "Please log out and login in again."
+red "Please source .zshrc, or log out and login in again."
