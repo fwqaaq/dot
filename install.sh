@@ -3,7 +3,7 @@
 type bash &>/dev/null && shtype=bash || shtype=sh
 
 OhMyZSH="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-Root="https://raw.githubusercontent.com/fwqaaq/Nvim/main/"
+Root="https://raw.githubusercontent.com/fwqaaq/dot/main/"
 ZshAutoSuggestions="https://github.com/zsh-users/zsh-autosuggestions"
 ZshHistorySubStringSearch="https://github.com/zsh-users/zsh-history-substring-search"
 ZshSyntaxHighLighting="https://github.com/zsh-users/zsh-syntax-highlighting.git"
