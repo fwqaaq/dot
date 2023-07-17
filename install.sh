@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-type bash &>/dev/null && shtype=bash || shtype=sh
-
 OhMyZSH="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 Root="https://raw.githubusercontent.com/fwqaaq/dot/main/"
 ZshAutoSuggestions="https://github.com/zsh-users/zsh-autosuggestions"
@@ -9,6 +7,7 @@ ZshHistorySubStringSearch="https://github.com/zsh-users/zsh-history-substring-se
 ZshSyntaxHighLighting="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 Powerlevel10k="https://github.com/romkatv/powerlevel10k.git"
 Nvm="https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh"
+Repo="https://github.com/fwqaaq/dot.git"
 
 choses=("install" "exit")
 
@@ -95,6 +94,20 @@ installTmux() {
         yellow "Done. But you must open tmux, and use 'Ctrl-a' + 'Shift-i' to install others plugins."
 }
 
+installNvim() {
+        if ! command -v nvim >/dev/null 2>&1; then
+                red "Please install NEOVIM at first."
+                exit 1
+        fi
+
+        if [ -d "$HOME/.config/" ]; then
+                red "nvim config already exists"
+                exit 1
+        else
+                mkdir -p "$HOME/.config/"
+        fi
+}
+
 if ! command -v git >/dev/null 2>&1; then
         red "Please install git at first."
         exit 1
@@ -174,3 +187,16 @@ else
 fi
 
 red "Please source .zshrc, or log out and login in again."
+
+# Install Nvim
+green "Do you want to install nvim config? Please intput (y/n)"
+read answer
+if [ "$answer" = "y" ]; then
+        if installNvim; then
+                green "Complete nvim download."
+        else
+                red "Excution failed! Please view the question!"
+        fi
+else
+        green "Continue....."
+fi
