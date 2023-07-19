@@ -1,6 +1,6 @@
 # README
 
-> 本仓库的配置抄自 [Youtube Josean Martinez](https://www.youtube.com/watch?v=vdn_pKJUda8&t=3228s)
+> 本仓库的部分配置参考自 [Youtube Josean Martinez](https://www.youtube.com/watch?v=vdn_pKJUda8&t=3228s)
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.sh)"
