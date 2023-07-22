@@ -1,0 +1,136 @@
+{
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions": [
+    {
+      "command": {
+        "action": "copy",
+        "singleLine": false
+      },
+      "keys": "ctrl+c"
+    },
+    {
+      "command": "paste",
+      "keys": "ctrl+v"
+    },
+    {
+      "command": "find",
+      "keys": "ctrl+shift+f"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "auto",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+d"
+    }
+  ],
+  "copyFormatting": "none",
+  "copyOnSelect": false,
+  "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+  "language": "zh-Hans",
+  "newTabMenu": [
+    {
+      "type": "remainingProfiles"
+    }
+  ],
+  "profiles": {
+    "defaults": {
+      "colorScheme": "Summer Dark",
+      "cursorShape": "filledBox",
+      "font": {
+        "face": "CaskaydiaCove Nerd Font Mono"
+      }
+    },
+    "list": [
+      {
+        "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+        "hidden": false,
+        "name": "Windows PowerShell"
+      },
+      {
+        "commandline": "%SystemRoot%\\System32\\cmd.exe",
+        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+        "hidden": false,
+        "name": "\u547d\u4ee4\u63d0\u793a\u7b26"
+      },
+      {
+        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+        "hidden": false,
+        "name": "Azure Cloud Shell",
+        "source": "Windows.Terminal.Azure"
+      },
+      {
+        "guid": "{17bf3de4-5353-5709-bcf9-835bd952a95e}",
+        "hidden": true,
+        "name": "Ubuntu-22.04",
+        "source": "Windows.Terminal.Wsl"
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "background": "#010B17",
+      "black": "#0B3B61",
+      "blue": "#1376F8",
+      "brightBlack": "#62686C",
+      "brightBlue": "#378DFE",
+      "brightCyan": "#FF69D7",
+      "brightGreen": "#73FFD8",
+      "brightPurple": "#AE81FF",
+      "brightRed": "#FF54B0",
+      "brightWhite": "#5FFBBE",
+      "brightYellow": "#FCF4AD",
+      "cursorColor": "#38FF9C",
+      "cyan": "#FF5DD4",
+      "foreground": "#EBDDF4",
+      "green": "#52FFCF",
+      "name": "Summer Dark",
+      "purple": "#C792EA",
+      "red": "#FF3A3A",
+      "selectionBackground": "#000000",
+      "white": "#15FCA2",
+      "yellow": "#FFF383"
+    }
+  ],
+  "themes": [
+    {
+      "name": "legacyDark",
+      "tab": {
+        "background": null,
+        "showCloseButton": "always",
+        "unfocusedBackground": null
+      },
+      "window": {
+        "applicationTheme": "dark",
+        "useMica": false
+      }
+    },
+    {
+      "name": "legacyLight",
+      "tab": {
+        "background": null,
+        "showCloseButton": "always",
+        "unfocusedBackground": null
+      },
+      "window": {
+        "applicationTheme": "light",
+        "useMica": false
+      }
+    },
+    {
+      "name": "legacySystem",
+      "tab": {
+        "background": null,
+        "showCloseButton": "always",
+        "unfocusedBackground": null
+      },
+      "window": {
+        "applicationTheme": "system",
+        "useMica": false
+      }
+    }
+  ]
+}

@@ -100,7 +100,14 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
 23. `C-b` + d:  使终端在后台运行
 24. `C-a` + `Shift-i`: 自动下载插件
 
-## 字体设置
+## 其它配置
+
+### 字体设置
 
 这里使用 [Nerd fonts](https://www.nerdfonts.com/font-downloads) 字体。
 
+### 终端配置
+
+MacOS 下使用的是 iterm2，这里是完整的[配置文件](./terminal_config/mac_iterm2.json)
+
+Windows 下使用的是 powershell，这里是完整的[配置文件](./terminal_config/win_powershell.json)
