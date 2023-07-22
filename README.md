@@ -99,3 +99,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
 22. `C-a` + `shift-[` 左右/上下会话互换
 23. `C-b` + d:  使终端在后台运行
 24. `C-a` + `Shift-i`: 自动下载插件
+
+## 字体设置
+
+这里使用 [Nerd fonts](https://www.nerdfonts.com/font-downloads) 字体。
+
