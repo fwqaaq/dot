@@ -39,23 +39,13 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
     * ds + “ 或者你想要的键，可以删除单词两边
     * cs + “（想要被替换的键） + ‘（想要替换的键）
 3. `inkarkat/vim-ReplaceWithRegister`
-    * 例如使用 `gr + w`，将剪贴板的东西复制到这个单词
-4. `numToStr/Comment.nvim`
-    * 注释，gcc，或者行数 + gcc，或者 gc + 行数 + jk
-5. `nvim-lualine/lualine.nvim`
-    * nvim 产生空文件时，可以使用 a 保存该文件到某个位置
-6. `telescope`
-    * `\<leader>ff`：寻找当前目录的文件
-    * `\<leader>fs`：以字符串的形式寻找当前目录的文件
-    * `\<leader>fc`：寻找当前光标所在字符串的工作目录文件
-    * `\<leader>fb`：列出所有 neovim 实例打开的所有的缓冲区
-    * `\<leader>fh`：列出所有可获得帮助的标签
-7. Git
+    * 例如使用 `gr + w`，将剪贴板的sudo apt install telegram-desktop帮助的标签
+4. Git
     * \<leader>gc：列出所有 Git 提交（按下 \<cr>进行检出）[“gc”表示 git 提交]
     * \<leader>gfc：列出当前文件/缓冲区的 Git 提交（按下 \<cr> 进行检出）[“gfc”表示 git 文件提交]
     * \<leader>gb：列出Git分支（按下 \<cr> 进行检出）[“gb”表示 git 分支]
     * \<leader>gs：列出当前每个文件的更改，并显示差异预览 [“gs”表示 git 状态]
-8. lsp
+5. lsp
    * \<leader>rs：重启 lsp 服务
    * gf：展示结果、引用
    * gD：转到定义
@@ -111,3 +101,5 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
 MacOS 下使用的是 iterm2，这里是完整的[配置文件](./terminal_config/mac_iterm2.json)
 
 Windows 下使用的是 powershell，这里是完整的[配置文件](./terminal_config/win_powershell.json)
+
+Linux 下使用的是 konsole，这里是完整的[配置文件](./terminal_config/summer_dark.colorscheme)，你需要将它放置在 `~/.local/share/konsole` 下，然后在 konsole 的设置中选择该主题。
