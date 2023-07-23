@@ -135,7 +135,7 @@ if [ "$answer" = "y" ]; then
         curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
         echo -e "\e[42;30mComplete plugin download\e[0m"
         red "Excution failed! Please review the question!"
-else
+elif [ "$answer" = "n" ] && [ ! -f "$HOME/.zshrc" ]; then
         red "exit...."
         exit 1
 fi
@@ -153,7 +153,7 @@ if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
 fi
 
 # Download plugins
-source ~/.zshrc
+# source ~/.zshrc
 installPlugins
 
 # Install nvm for node
