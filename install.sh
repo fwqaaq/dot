@@ -8,6 +8,8 @@ ZshSyntaxHighLighting="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 Powerlevel10k="https://github.com/romkatv/powerlevel10k.git"
 Nvm="https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh"
 Repo="https://github.com/fwqaaq/dot.git"
+NvimPath='https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz'
+DownLoadNvimPath='/opt/nvim-linux64.tar.gz'
 
 choses=("install" "exit")
 
@@ -95,16 +97,22 @@ installTmux() {
 }
 
 installNvim() {
+
         if ! command -v nvim >/dev/null 2>&1; then
-                red "Please install NEOVIM at first."
-                exit 1
+                set -e
+                sudo curl -L -o $DownLoadNvimPath $NvimPath
+                sudo tar -xvf $DownLoadNvimPath -C /opt/
+                sudo ln -s /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
+                sudo rm -rf $DownLoadNvimPath
+                set +e
         fi
 
-        if [ -d "$HOME/.config/" ]; then
-                red "nvim config already exists"
-                exit 1
-        else
+        if [ ! -d "$HOME/.config/" ]; then
                 mkdir -p "$HOME/.config/"
+        fi
+
+        if [ -d "$HOME/.config/nvim" ]; then
+                mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak"
         fi
 }
 
@@ -193,6 +201,9 @@ green "Do you want to install nvim config? Please intput (y/n)"
 read answer
 if [ "$answer" = "y" ]; then
         if installNvim; then
+                git clone --depth=1 "$Repo" "$HOME/.config/dot"
+                mv "$HOME/.config/dot/.config/nvim/" "$HOME/.config/nvim/"
+                rm -rf "$HOME/.config/dot"
                 green "Complete nvim download."
         else
                 red "Excution failed! Please view the question!"

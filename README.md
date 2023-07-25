@@ -103,3 +103,7 @@ MacOS 下使用的是 iterm2，这里是完整的[配置文件](./terminal_confi
 Windows 下使用的是 powershell，这里是完整的[配置文件](./terminal_config/win_powershell.json)
 
 Linux 下使用的是 konsole，这里是完整的[配置文件](./terminal_config/summer_dark.colorscheme)，你需要将它放置在 `~/.local/share/konsole` 下，然后在 konsole 的设置中选择该主题。
+
+### LSP 配置
+
+详情请见 Mason：<https://github.com/williamboman/mason.nvim>（进入 nvim 后，`:Mason` 进行下载）
