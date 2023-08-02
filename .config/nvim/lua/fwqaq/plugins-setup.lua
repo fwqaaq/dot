@@ -92,6 +92,9 @@ return packer.startup(function(use)
 		"saecki/crates.nvim",
 		event = { "BufRead Cargo.toml" },
 		dependencies = { "nvim-lua/plenary" },
+		config = function()
+			require("crates").setup()
+		end,
 	})
 
 	-- rust tools
