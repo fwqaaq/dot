@@ -138,3 +138,35 @@ lspconfig["clangd"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
+
+lspconfig["denols"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	filetypes = { "javascript", "typescript" },
+})
+
+lspconfig["jsonls"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig["marksman"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	filetypes = { "markdown" },
+})
+
+lspconfig["volar"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig["taplo"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig["yamlls"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})

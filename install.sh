@@ -97,7 +97,6 @@ installTmux() {
 }
 
 installNvim() {
-
         if ! command -v nvim >/dev/null 2>&1; then
                 set -e
                 sudo curl -L -o $DownLoadNvimPath $NvimPath
@@ -141,8 +140,7 @@ read answer
 if [ "$answer" = "y" ]; then
         curl -o ~/.zshrc "${Root}.zshrc"
         curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
-        echo -e "\e[42;30mComplete plugin download\e[0m"
-        red "Excution failed! Please review the question!"
+        green -e "\e[42;30mComplete plugin download\e[0m"
 elif [ "$answer" = "n" ] && [ ! -f "$HOME/.zshrc" ]; then
         red "exit...."
         exit 1
