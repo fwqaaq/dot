@@ -140,6 +140,8 @@ read answer
 if [ "$answer" = "y" ]; then
         curl -o ~/.zshrc "${Root}.zshrc"
         curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
+        # Generate $ZSH
+        source ~/.zshrc
         green -e "\e[42;30mComplete plugin download\e[0m"
 elif [ "$answer" = "n" ] && [ ! -f "$HOME/.zshrc" ]; then
         red "exit...."
