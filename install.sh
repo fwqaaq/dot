@@ -65,7 +65,7 @@ installNvm() {
                         green "start automatic intall for you"
                         (curl -o- $Nvm | bash) &
                         wait $!
-                        source ~/.zshrc
+                        #zsh -c "source ~/.zshrc"
                         set -e
                         nvm install --lts
                         npm install pnpm -g
@@ -134,19 +134,6 @@ if [[ -n "$SHELL" && "${SHELL##*/}" != "zsh" ]]; then
         fi
 fi
 
-green "Do you want to install .zshrc and p10k config? And, it's necessary. Please intput (y/n)"
-read answer
-
-if [ "$answer" = "y" ]; then
-        curl -o ~/.zshrc "${Root}.zshrc"
-        curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
-        # Generate $ZSH
-        source ~/.zshrc
-        green -e "\e[42;30mComplete plugin download\e[0m"
-elif [ "$answer" = "n" ] && [ ! -f "$HOME/.zshrc" ]; then
-        red "exit...."
-        exit 1
-fi
 
 if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
         green "              You need to install oh-my-zsh, you can chose 1 or 2"
@@ -158,10 +145,23 @@ if [ ! -n "$ZSH" ] || [ ! -f "$ZSH/oh-my-zsh.sh" ]; then
                 sh -c "$(curl -fsSL $OhMyZSH)"
         ) &
         wait $!
+        export ZSH="$HOME/.oh-my-zsh"
+fi
+
+green "Do you want to install .zshrc and p10k config? And, it's necessary. Please intput (y/n)"
+read answer
+
+if [ "$answer" = "y" ]; then
+        curl -o ~/.zshrc "${Root}.zshrc"
+        curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
+        # Generate $ZSH
+        green -e "\e[42;30mComplete plugin download\e[0m"
+elif [ "$answer" = "n" ] && [ ! -f "$HOME/.zshrc" ]; then
+        red "exit...."
+        exit 1
 fi
 
 # Download plugins
-# source ~/.zshrc
 installPlugins
 
 # Install nvm for node
