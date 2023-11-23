@@ -1,4 +1,7 @@
-# README
+<div align=center>
+   <h1>NVIM 配置⚙️</h1>
+  <img style="margin: 0 auto;" src="https://github.com/fwqaaq/dot/assets/82551626/1964f701-bc7b-40b7-b2b1-3ff0bccd2400" />
+</div>
 
 > 本仓库的部分配置参考自 [Youtube Josean Martinez](https://www.youtube.com/watch?v=vdn_pKJUda8&t=3228s)
 
