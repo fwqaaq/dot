@@ -22,21 +22,28 @@ mason.setup()
 mason_lspconfig.setup({
 	-- list of servers for mason to install
 	ensure_installed = {
-		"tsserver",
-		"html",
+		"clang-format",
+		"clangd",
+		"codelldb",
 		"cssls",
 		"cssmodules_ls",
-		"tailwindcss",
-		"lua_ls",
-		"emmet_ls",
-		"rust_analyzer",
 		"denols",
-		"clangd",
+		"emmet_ls",
+		"eslint_d",
+		"gopls",
+		"golangci_lint_ls",
+		"html",
 		"jsonls",
-		"rust_analyzer",
+		"lua_ls",
+		"markdownlint",
 		"marksman",
-		"volar",
+		"prettier",
+		"rust_analyzer",
+		"stylua",
+		"tailwindcss",
 		"taplo",
+		"tsserver",
+		"volar",
 		"yamlls",
 	},
 	-- auto-install configured servers (with lspconfig)
@@ -49,6 +56,8 @@ mason_null_ls.setup({
 		"prettier", -- ts/js formatter
 		"stylua", -- lua formatter
 		"eslint_d", -- ts/js linter
+		"golangci_lint_ls", -- go linter
+		"clang-format", -- clang formatter
 	},
 	-- auto-install configured formatters & linters (with null-ls)
 	automatic_installation = true,

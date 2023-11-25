@@ -145,6 +145,16 @@ lspconfig["denols"].setup({
 	filetypes = { "javascript", "typescript" },
 })
 
+lspconfig["gopls"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig["golangci_lint_ls"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
 lspconfig["jsonls"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
