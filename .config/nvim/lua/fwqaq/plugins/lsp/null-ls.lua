@@ -19,6 +19,7 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 -- configure null_ls
 null_ls.setup({
+	offset_encoding = "utf-8",
 	-- setup formatters & linters
 	sources = {
 		--  to disable file types use
@@ -30,11 +31,11 @@ null_ls.setup({
 		formatting.gofmt, -- golang formatter
 
 		-- clang-format
-		formatting.clang_format.with({
-			condition = function(utils)
-				return utils.root_has_file(".clang-format")
-			end,
-		}),
+		-- formatting.clang_format.with({
+		-- 	condition = function(utils)
+		-- 		return utils.root_has_file(".clang-format")
+		-- 	end,
+		-- }),
 
 		diagnostics.eslint_d.with({ -- js/ts linter
 			-- only enable eslint if root has .eslintrc.js (not in youtube nvim video)

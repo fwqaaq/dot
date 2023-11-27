@@ -22,24 +22,18 @@ mason.setup()
 mason_lspconfig.setup({
 	-- list of servers for mason to install
 	ensure_installed = {
-		"clang-format",
-		"clangd",
-		"codelldb",
+		-- "clangd",
 		"cssls",
 		"cssmodules_ls",
 		"denols",
 		"emmet_ls",
-		"eslint_d",
 		"gopls",
 		"golangci_lint_ls",
 		"html",
 		"jsonls",
 		"lua_ls",
-		"markdownlint",
 		"marksman",
-		"prettier",
 		"rust_analyzer",
-		"stylua",
 		"tailwindcss",
 		"taplo",
 		"tsserver",
@@ -56,8 +50,8 @@ mason_null_ls.setup({
 		"prettier", -- ts/js formatter
 		"stylua", -- lua formatter
 		"eslint_d", -- ts/js linter
+		"clang_format", -- clang formatter
 		"golangci_lint_ls", -- go linter
-		"clang-format", -- clang formatter
 	},
 	-- auto-install configured formatters & linters (with null-ls)
 	automatic_installation = true,
