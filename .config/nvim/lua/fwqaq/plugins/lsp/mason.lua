@@ -28,7 +28,6 @@ mason_lspconfig.setup({
 		"denols",
 		"emmet_ls",
 		"gopls",
-		"golangci_lint_ls",
 		"html",
 		"jsonls",
 		"lua_ls",
@@ -39,6 +38,7 @@ mason_lspconfig.setup({
 		"tsserver",
 		"volar",
 		"yamlls",
+		"bufls",
 	},
 	-- auto-install configured servers (with lspconfig)
 	automatic_installation = true, -- not the same as ensure_installed
@@ -51,7 +51,6 @@ mason_null_ls.setup({
 		"stylua", -- lua formatter
 		"eslint_d", -- ts/js linter
 		"clang_format", -- clang formatter
-		"golangci_lint_ls", -- go linter
 	},
 	-- auto-install configured formatters & linters (with null-ls)
 	automatic_installation = true,

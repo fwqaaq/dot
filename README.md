@@ -13,55 +13,61 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
 
 > 快捷键，leader 键为 \<space>
 
-| 快捷键      | 等同于         | 作用                     |
-| ----------- | -------------- | ------------------------ |
-| jk          | \<esc>         | 退出编辑模式（i 模式下） |
-| \<leader>nh | :nohl\<CR>     | 代替 `:` 在终端中的搜索  |
-| x           | "\_x           | 删除光标下的字符         |
-| \<leader>+  | \<C-a>         | 自增                     |
-| \<leader>-  | \<C-x>         | 自减                     |
-| \<leader>sv | \<C-w>v        | 垂直方向分割窗口         |
-| \<leader>sh | \<C-w>s        | 水平方向分割窗口         |
-| \<leader>se | \<C-w>=        | 使分割的窗口宽高相等     |
-| \<leader>sx | :close\<CR>    | 关闭当先分割的窗口       |
-| \<leader>to | :tabnew\<CR>   | 打开新的 tab             |
-| \<leader>tx | :tabclose\<CR> | 关闭当前的 tab           |
-| \<leader>tn | :tabn\<CR>     | 转到上一个 tab           |
-| \<leader>tp | :tabp\<CR>     | 转到下一个 tab           |
-| \<leader>sm | :MaximizerToggle\<CR> | 隐藏以及恢复分割的终端 |
-| \<leader>e | :NvimTreeToggle\<CR> | 触发文件栏的隐藏以及恢复 |
+| 快捷键      | 等同于                | 作用                     |
+| ----------- | --------------------- | ------------------------ |
+| jk          | \<esc>                | 退出编辑模式（i 模式下） |
+| \<leader>nh | :nohl\<CR>            | 代替 `:` 在终端中的搜索  |
+| x           | "\_x                  | 删除光标下的字符         |
+| \<leader>+  | \<C-a>                | 自增                     |
+| \<leader>-  | \<C-x>                | 自减                     |
+| \<leader>sv | \<C-w>v               | 垂直方向分割窗口         |
+| \<leader>sh | \<C-w>s               | 水平方向分割窗口         |
+| \<leader>se | \<C-w>=               | 使分割的窗口宽高相等     |
+| \<leader>sx | :close\<CR>           | 关闭当先分割的窗口       |
+| \<leader>to | :tabnew\<CR>          | 打开新的 tab             |
+| \<leader>tx | :tabclose\<CR>        | 关闭当前的 tab           |
+| \<leader>tn | :tabn\<CR>            | 转到上一个 tab           |
+| \<leader>tp | :tabp\<CR>            | 转到下一个 tab           |
+| \<leader>sm | :MaximizerToggle\<CR> | 隐藏以及恢复分割的终端   |
+| \<leader>e  | :NvimTreeToggle\<CR>  | 触发文件栏的隐藏以及恢复 |
 
 ---
 
 > 插件机制
 
 1. `christoomey/vim-tmux-navigator`
-    * 用于分割的窗口，Ctrl +h / j / k / l，可以在不同的窗口跳转
+   - 用于分割的窗口，Ctrl +h / j / k / l，可以在不同的窗口跳转
 2. `tpope/vim-surround`
-    * ysw + “ 或者你想要的键，加到单词两边
-    * ds + “ 或者你想要的键，可以删除单词两边
-    * cs + “（想要被替换的键） + ‘（想要替换的键）
+   - ysw + “ 或者你想要的键，加到单词两边
+   - ds + “ 或者你想要的键，可以删除单词两边
+   - cs + “（想要被替换的键） + ‘（想要替换的键）
 3. `inkarkat/vim-ReplaceWithRegister`
-    * 例如使用 `gr + w`，将剪贴板的sudo apt install telegram-desktop帮助的标签
+   - 例如使用 `gr + w`，将剪贴板的sudo apt install telegram-desktop帮助的标签
 4. Git
-    * \<leader>gc：列出所有 Git 提交（按下 \<cr>进行检出）[“gc”表示 git 提交]
-    * \<leader>gfc：列出当前文件/缓冲区的 Git 提交（按下 \<cr> 进行检出）[“gfc”表示 git 文件提交]
-    * \<leader>gb：列出Git分支（按下 \<cr> 进行检出）[“gb”表示 git 分支]
-    * \<leader>gs：列出当前每个文件的更改，并显示差异预览 [“gs”表示 git 状态]
+   - \<leader>gc：列出所有 Git 提交（按下 \<cr>进行检出）[“gc”表示 git 提交]
+   - \<leader>gfc：列出当前文件/缓冲区的 Git 提交（按下 \<cr> 进行检出）[“gfc”表示 git 文件提交]
+   - \<leader>gb：列出Git分支（按下 \<cr> 进行检出）[“gb”表示 git 分支]
+   - \<leader>gs：列出当前每个文件的更改，并显示差异预览 [“gs”表示 git 状态]
 5. lsp
-   * \<leader>rs：重启 lsp 服务
-   * gf：展示结果、引用
-   * gD：转到定义
-   * gd：查看定义并在窗口中编辑
-   * gi：跳转到实现
-   * \<leader>ca：查看可用的代码操作
-   * \<leader>rn：智能重命名
-   * \<leader>D：显示该行的问题
-   * \<leader>d：显示光标的位置问题的诊断
-   * `[d`：跳转到缓冲区中的上一个诊断
-   * `]d`：跳转到缓冲区中的下一个诊断
-   * `K`：显示光标下内容的文档
-   * \<leader>o：参见右手边的轮廓
+   - \<leader>rs：重启 lsp 服务
+   - gf：展示结果、引用
+   - gD：转到定义
+   - gd：查看定义并在窗口中编辑
+   - gi：跳转到实现
+   - \<leader>ca：查看可用的代码操作
+   - \<leader>rn：智能重命名
+   - \<leader>D：显示该行的问题
+   - \<leader>d：显示光标的位置问题的诊断
+   - `[d`：跳转到缓冲区中的上一个诊断
+   - `]d`：跳转到缓冲区中的下一个诊断
+   - `K`：显示光标下内容的文档
+   - \<leader>o：参见右手边的轮廓
+6. telescope
+   - \<leader>ff：查找当前目录的所有文件，不包含隐藏文件
+   - \<leader>fb：按照当前的目录结构打开文件
+   - \<leader>fs：根据你输入的文字查找当前目录的文件
+   - \<leader>fc：寻找你输入的文字，按照光标下的文字查找
+   - \<leader>fh：列出所有可帮助的命令
 
 ## tmux
 
@@ -86,18 +92,18 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
 19. `C-a` + `w` 展示 tmux 到所有会话
 20. `C-a` + `m` 隐藏/展示终端会话
 21. `C-a` + `[` 在终端使用 vim 模式，可以使用 hjkl，或者 + shift 加速，shift 直接退出该模式
-    * 也可以使用 `C-u` 向上翻半页，`C-d` 向下翻半页，`C-f` 翻一整页
-    * `C-b` 向上翻一整页，`C-f` 向下翻一整页
-    * `v` 可以选择多个文本，使用 `y` 可以复制选择的文本
+    - 也可以使用 `C-u` 向上翻半页，`C-d` 向下翻半页，`C-f` 翻一整页
+    - `C-b` 向上翻一整页，`C-f` 向下翻一整页
+    - `v` 可以选择多个文本，使用 `y` 可以复制选择的文本
 22. `C-a` + `shift-[` 左右/上下会话互换
-23. `C-b` + d:  使终端在后台运行
+23. `C-b` + d: 使终端在后台运行
 24. `C-a` + `Shift-i`: 自动下载插件
 
 ## 其它配置
 
 ### 字体设置
 
-这里使用 [Nerd fonts](https://www.nerdfonts.com/font-downloads) 字体。
+这里使用 [Nerd fonts](https://www.nerdfonts.com/font-downloads) 字体，在 VSCode 中使用的是 [MesloLGS NF](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#manual-font-installation) 字体。
 
 ### 终端配置
 
