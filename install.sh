@@ -25,14 +25,15 @@ red() {
 }
 
 start() {
-        term_width=$(tput cols)
-        text="NVIM 配置⚙️"
-        text_length=${#text}
-        padding=$(((term_width - text_length) / 2))
-        printf "%${padding}s%s\r\n\r\n\r\n" " " "$text"
+        text="
+                         ____ _____  _    ____ _____      
+                  __/\__/ ___|_   _|/ \  |  _ \_   _|_/\__
+                  \    /\___ \ | | / _ \ | |_) || | \    /
+                  /_  _\ ___) || |/ ___ \|  _ < | | /_  _\\
+                    \/  |____/ |_/_/   \_\_| \_\|_|   \/  
+        "
+        echo -e "\033[32m $text \033[0m"
 }
-
-start
 
 installPlugins() {
         if [ -n "$ZSH" ]; then
@@ -109,6 +110,9 @@ installNvim() {
                 mv "$HOME/.config/nvim" "$HOME/.config/nvim.bak"
         fi
 }
+
+# flag!
+start
 
 if ! command -v git >/dev/null 2>&1; then
         red "Please install git at first."
