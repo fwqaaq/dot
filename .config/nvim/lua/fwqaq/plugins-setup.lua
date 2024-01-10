@@ -77,8 +77,11 @@ return packer.startup(function(use)
 	use("neovim/nvim-lspconfig") -- easily configure language servers
 	use("hrsh7th/cmp-nvim-lsp") -- for autocompletion
 	use({
-		"glepnir/lspsaga.nvim",
-		branch = "main",
+		"nvimdev/lspsaga.nvim",
+		after = "nvim-lspconfig",
+		config = function()
+			require("lspsaga").setup({})
+		end,
 		requires = {
 			{ "nvim-tree/nvim-web-devicons" },
 			{ "nvim-treesitter/nvim-treesitter" },
@@ -96,9 +99,6 @@ return packer.startup(function(use)
 			require("crates").setup()
 		end,
 	})
-
-	-- rust tools
-	use({ "simrat39/rust-tools.nvim" })
 
 	-- formatting & linting
 	use("jose-elias-alvarez/null-ls.nvim") -- configure formatters & linters

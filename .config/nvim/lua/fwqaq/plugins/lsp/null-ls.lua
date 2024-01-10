@@ -9,10 +9,13 @@ local formatting = null_ls.builtins.formatting -- to setup formatters
 local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
 -- 8 spaces for golang
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "go",
-	command = "setlocal shiftwidth=8 tabstop=8 noexpandtab",
-})
+local function setup_go_ident()
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "go",
+		command = "setlocal shiftwidth=8 tabstop=8 noexpandtab",
+	})
+end
+setup_go_ident()
 
 -- to setup format on save
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -22,20 +25,11 @@ null_ls.setup({
 	offset_encoding = "utf-8",
 	-- setup formatters & linters
 	sources = {
-		--  to disable file types use
-		--  "formatting.prettier.with({disabled_filetypes = {}})" (see null-ls docs)
 		formatting.prettier, -- js/ts formatter
 		formatting.stylua, -- lua formatter
 		formatting.clang_format, -- clang formatter
 		formatting.rustfmt, -- setup edition="2021" in the rustfmt.toml
 		formatting.gofmt, -- golang formatter
-
-		-- clang-format
-		-- formatting.clang_format.with({
-		-- 	condition = function(utils)
-		-- 		return utils.root_has_file(".clang-format")
-		-- 	end,
-		-- }),
 
 		diagnostics.eslint_d.with({ -- js/ts linter
 			-- only enable eslint if root has .eslintrc.js (not in youtube nvim video)

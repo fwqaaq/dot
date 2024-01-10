@@ -16,12 +16,6 @@ if not typescript_setup then
 	return
 end
 
--- import rust tools plugin safely
-local rust_tools_status, rust_tools = pcall(require, "rust-tools")
-if not rust_tools_status then
-	return
-end
-
 local keymap = vim.keymap -- for conciseness
 
 -- enable keybinds only for when lsp server available
@@ -64,6 +58,12 @@ end
 
 -- configure html server
 lspconfig["html"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+-- configure rust server
+lspconfig["rust_analyzer"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
@@ -112,24 +112,6 @@ lspconfig["lua_ls"].setup({
 					[vim.fn.stdpath("config") .. "/lua"] = true,
 				},
 			},
-		},
-	},
-})
-
-rust_tools.setup({
-	tools = {
-		executor = require("rust-tools.executors").termopen,
-		inlay_hints = {
-			auto = true,
-		},
-		hover_actions = {
-			auto_focus = true,
-		},
-	},
-	server = {
-		on_attach = on_attach,
-		settings = {
-			-- ["rust-analyzer"] = {}
 		},
 	},
 })
