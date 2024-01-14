@@ -24,6 +24,8 @@ red() {
         echo -e "\033[31m $1 \033[0m"
 }
 
+export -f green yellow red
+
 start() {
         text="
                          ____ _____  _    ____ _____      
@@ -36,7 +38,7 @@ start() {
 }
 
 installPlugins() {
-        if [ -n "$ZSH" ]; then
+        if [[ -n "$ZSH" ]]; then
                 Custom="$ZSH/custom"
         else
                 red "Not found ZSH!!!"
@@ -48,29 +50,29 @@ installPlugins() {
         local PluginsPath_hig="${Custom}/plugins/zsh-syntax-highlighting"
         local ThemePath_pow="${Custom}/themes/powerlevel10k"
         if [[ ! -d "$pluginsPath_sug" ]]; then
-                green "Installing $ZshAutoSuggestions ...."
+                green "[INFO] Installing $ZshAutoSuggestions ...."
                 git clone --depth=1 "$ZshAutoSuggestions" "$pluginsPath_sug"
         fi
         if [[ ! -d "$pluginsPath_sea" ]]; then
-                green "Installing $ZshHistorySubStringSearch ...."
+                green "[INFO] Installing $ZshHistorySubStringSearch ...."
                 git clone --depth=1 "$ZshHistorySubStringSearch" "$pluginsPath_sea"
         fi
         if [[ ! -d "$PluginsPath_hig" ]]; then
-                green "Installing $ZshSyntaxHighLighting ...."
+                green "[INFO] Installing $ZshSyntaxHighLighting ...."
                 git clone --depth=1 "$ZshSyntaxHighLighting" "$PluginsPath_hig"
         fi
         if [[ ! -d "$ThemePath_pow" ]]; then
-                green "Installing $Powerlevel10k ...."
+                green "[INFO] Installing $Powerlevel10k ...."
                 git clone --depth=1 "$Powerlevel10k" "$ThemePath_pow"
         fi
 }
 
 installNvm() {
         if command -v node >/dev/null 2>&1; then
-                green "Hi, you already have node, we will jump! You can chose by youself.."
+                yellow "[WARNING] Hi, you already have node, we will jump! You can chose by youself.."
         fi
 
-        green "Beginning automatic installation for you."
+        green "[INFO] Beginning automatic installation for you."
         (curl -o- $Nvm | bash) &
         wait $!
         set -e
@@ -82,14 +84,14 @@ installNvm() {
 
 installTmux() {
         if ! command -v tmux >/dev/null 2>&1; then
-                green "Hi, you don't yet have tmux, we will exit!..."
+                red "[WRONG] Hi, you don't yet have tmux, we will exit!..."
                 exit 1
         fi
 
-        green "Let's start to install .tmux.conf and its plugins."
+        green "[INFO] Let's start to install .tmux.conf and its plugins."
         curl -o ~/.tmux.conf "${Root}.tmux.conf"
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-        yellow "Done. But you must open tmux, and use 'Ctrl-a' + 'Shift-i' to install others plugins."
+        yellow "[WARNING] Done. But you must open tmux, and use 'Ctrl-a' + 'Shift-i' to install others plugins."
 }
 
 installNvim() {
@@ -114,27 +116,35 @@ installNvim() {
 # flag!
 start
 
+if [[ "$(uname)" == "Linux" ]]; then
+        green "Init for Linux OS (y/n)"
+        read answer
+        if [[ "$answer" == "y" || "$answer" == "yes" ]]; then
+                bash ./debian.sh
+        fi
+fi
+
 if ! command -v git >/dev/null 2>&1; then
-        red "Please install git at first."
+        red "[WRONG] Please install git at first."
         exit 1
 fi
 
 if [[ -n "$SHELL" && "${SHELL##*/}" != "zsh" ]]; then
         if command -v zsh >/dev/null 2>&1; then
                 if chsh -s "$(which zsh)"; then
-                        yellow "Zsh is now the default shell. Please log out and log back in to apply the changes."
+                        yellow "[WARNING] Zsh is now the default shell. Please log out and log back in to apply the changes."
                 else
-                        yellow "You need to install chsh command at first. Or You can set zsh by manually."
+                        yellow "[WARNING] You need to install chsh command at first. Or You can set zsh by manually."
                         exit 1
                 fi
         else
-                red "Zsh is not installed. You must intall zsh at first."
+                red "[WRONG] Zsh is not installed. You must intall zsh at first."
                 exit 1
         fi
 fi
 
 if [[ ! -n "$ZSH" || ! -f "$ZSH/oh-my-zsh.sh" ]]; then
-        green "You need to install oh-my-zsh; It can be installed automatically for you now."
+        green "[INFO] You need to install oh-my-zsh; It can be installed automatically for you now."
 
         (
                 sh -c "$(curl -fsSL $OhMyZSH)"
@@ -150,7 +160,7 @@ if [[ "$answer" = "y" || "$answer" = "yes" ]]; then
         curl -o ~/.zshrc "${Root}.zshrc"
         curl -o ~/.p10k.zsh "${Root}.p10k.zsh"
         # Generate $ZSH
-        green "Complete plugin download"
+        green "[INFO] Complete plugin download"
 elif [[ "$answer" = "n" && ! -f "$HOME/.zshrc" ]]; then
         red "You don't have .zshrc file, please generate it!!!"
         exit 1
@@ -165,10 +175,10 @@ read answer
 
 if [[ "$answer" = "y" || "$answer" = "yes" ]]; then
         if installNvm; then
-                echo -e "\033[42;30m Complete nvm and pnpm download\033[0m"
-                yellow "Please exec source ~/.zshrc"
+                echo -e "\033[42;30m Complete nvm and pnpm download.\033[0m"
+                yellow "[WARNING] Please exec source ~/.zshrc"
         else
-                red "Excution failed! Please view the question!"
+                red "[WRONG] Excution failed! Please view the question!"
         fi
 fi
 
@@ -179,13 +189,11 @@ read answer
 if [[ "$answer" = "y" || "$answer" = "yes" ]]; then
         green "Start...."
         if installTmux; then
-                green "Complete tmux download."
+                green "[INFO] Complete tmux download."
         else
-                red "Excution failed! Please view the question!"
+                red "[WRONG] Excution failed! Please view the question!"
         fi
 fi
-
-red "Please source .zshrc, or log out and login in again."
 
 # Install Nvim
 green "4 Install nvim config? Please intput (y/n)"
@@ -195,8 +203,10 @@ if [[ "$answer" = "y" || "$answer" = "yes" ]]; then
                 git clone --depth=1 "$Repo" "$HOME/.config/dot"
                 mv "$HOME/.config/dot/.config/nvim/" "$HOME/.config/nvim/"
                 rm -rf "$HOME/.config/dot"
-                green "Complete nvim download."
+                green "[INFO] Complete nvim download."
         else
-                red "Excution failed! Please view the question!"
+                red "[WRONG] Excution failed! Please view the question!"
         fi
 fi
+
+yellow "[WARNING] Please exec source ~/.zshrc or reboot your computer."
