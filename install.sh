@@ -120,7 +120,7 @@ if [[ "$(uname)" == "Linux" ]]; then
         green "Init for Linux OS (y/n)"
         read answer
         if [[ "$answer" == "y" || "$answer" == "yes" ]]; then
-                bash ./debian.sh
+                bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/debian.sh)"
         fi
 fi
 
