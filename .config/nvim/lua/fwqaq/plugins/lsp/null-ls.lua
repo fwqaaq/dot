@@ -4,6 +4,23 @@ if not setup then
 	return
 end
 
+local rustfmt = {
+	name = "rustfmt",
+	method = null_ls.methods.FORMATTING,
+	filetypes = { "rust" },
+	generator = {
+		fn = function(params)
+			local cmd = params.command or "rustfmt"
+			local args = params.args or { "--emit=stdout" }
+			return {
+				exe = cmd,
+				args = args,
+				stdin = true,
+			}
+		end,
+	},
+}
+
 -- for conciseness
 local formatting = null_ls.builtins.formatting -- to setup formatters
 local diagnostics = null_ls.builtins.diagnostics -- to setup linters
@@ -28,15 +45,8 @@ null_ls.setup({
 		formatting.prettier, -- js/ts formatter
 		formatting.stylua, -- lua formatter
 		formatting.clang_format, -- clang formatter
-		formatting.rustfmt, -- setup edition="2021" in the rustfmt.toml
+		rustfmt,
 		formatting.gofmt, -- golang formatter
-
-		diagnostics.eslint_d.with({ -- js/ts linter
-			-- only enable eslint if root has .eslintrc.js (not in youtube nvim video)
-			condition = function(utils)
-				return utils.root_has_file(".eslintrc.js") -- change file extension if you use something else
-			end,
-		}),
 	},
 	-- configure format on save
 	on_attach = function(current_client, bufnr)
