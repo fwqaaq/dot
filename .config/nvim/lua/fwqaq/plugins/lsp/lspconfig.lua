@@ -20,6 +20,9 @@ local keymap = vim.keymap -- for conciseness
 
 -- enable keybinds only for when lsp server available
 local on_attach = function(client, bufnr)
+	-- inlay hints
+	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
 
@@ -66,6 +69,32 @@ lspconfig["html"].setup({
 lspconfig["rust_analyzer"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+	diagnostics = true,
+	settings = {
+		-- enable clippy on save
+		checkOnSave = {
+			command = "clippy",
+		},
+		["rust_analyzer"] = {
+			completion = {
+				autoself = { enable = true },
+				postfix = { enable = true },
+			},
+			diagnostics = { enable = true },
+			inlayHints = {
+				lifetimeElisionHints = {
+					enable = true,
+					useParameterNames = true,
+				},
+				reborrowHints = { enable = true },
+				typeHints = { enable = true },
+				closureReturnTypeHints = { enable = "always" },
+			},
+			highlightRelated = {
+				references = { enable = true },
+			},
+		},
+	},
 })
 
 -- configure typescript server with plugin
@@ -127,6 +156,20 @@ lspconfig["denols"].setup({
 lspconfig["gopls"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+
+	settings = {
+		gopls = {
+			["ui.inlayhint.hints"] = {
+				assignVariableTypes = true,
+				compositeLiteralFields = true,
+				functionTypeParameters = true,
+				compositeLiteralTypes = true,
+				constantValues = true,
+				parameterNames = true,
+				rangeVariableTypes = true,
+			},
+		},
+	},
 })
 
 lspconfig["jsonls"].setup({
