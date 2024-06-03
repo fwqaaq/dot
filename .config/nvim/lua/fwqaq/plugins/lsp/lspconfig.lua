@@ -157,15 +157,17 @@ lspconfig["gopls"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 
-	["gopls"] = {
-		["ui.inlayhint.hints"] = {
-			assignVariableTypes = true,
-			compositeLiteralFields = true,
-			functionTypeParameters = true,
-			compositeLiteralTypes = true,
-			constantValues = true,
-			parameterNames = true,
-			rangeVariableTypes = true,
+	settings = {
+		gopls = {
+			["ui.inlayhint.hints"] = {
+				assignVariableTypes = true,
+				compositeLiteralFields = true,
+				functionTypeParameters = true,
+				compositeLiteralTypes = true,
+				constantValues = true,
+				parameterNames = true,
+				rangeVariableTypes = true,
+			},
 		},
 	},
 })
