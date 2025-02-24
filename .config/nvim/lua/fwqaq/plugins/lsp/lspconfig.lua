@@ -159,6 +159,7 @@ lspconfig["gopls"].setup({
 
 	settings = {
 		gopls = {
+			["ui.semanticTokens"] = true,
 			["ui.inlayhint.hints"] = {
 				assignVariableTypes = true,
 				compositeLiteralFields = true,
