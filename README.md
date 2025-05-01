@@ -109,7 +109,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/fwqaaq/dot/main/install.
 
 MacOS 下使用的是 iterm2，这里是完整的[配置文件](./terminal_config/mac_iterm2.json)
 
-Windows 下使用的是 powershell，这里是完整的[配置文件](./terminal_config/win_powershell.json)
+Windows 下使用的是 powershell，这里是完整的[配置文件](./terminal_config/win_powershell.json)，点击 powersell 配置下的 JSON 按钮，将 JSON 文件换成该配置文件即可。
 
 Linux 下使用的是 konsole，这里是完整的[配置文件](./terminal_config/summer_dark.colorscheme)，你需要将它放置在 `~/.local/share/konsole` 下，然后在 konsole 的设置中选择该主题。
 
