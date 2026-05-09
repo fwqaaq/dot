@@ -1,56 +1,63 @@
--- import mason plugin safely
-local mason_status, mason = pcall(require, "mason")
-if not mason_status then
-	return
-end
-
--- import mason-lspconfig plugin safely
-local mason_lspconfig_status, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not mason_lspconfig_status then
-	return
-end
-
--- import mason-null-ls plugin safely
-local mason_null_ls_status, mason_null_ls = pcall(require, "mason-null-ls")
-if not mason_null_ls_status then
-	return
-end
-
--- enable mason
-mason.setup()
-
-mason_lspconfig.setup({
-	-- list of servers for mason to install
-	ensure_installed = {
-		"cssls",
-		"cssmodules_ls",
-		"denols",
-		"emmet_ls",
-		"gopls",
-		"html",
-		"jsonls",
-		"lua_ls",
-		"marksman",
-		"rust_analyzer",
-		"tailwindcss",
-		"taplo",
-		"tsserver",
-		"volar",
-		"yamlls",
-		"bufls",
+return {
+	{
+		"mason-org/mason.nvim",
+		cmd = "Mason",
+		build = ":MasonUpdate",
+		config = function()
+			require("mason").setup({
+				ui = {
+					icons = {
+						package_installed = "✓",
+						package_pending = "➜",
+						package_uninstalled = "✗",
+					},
+				},
+			})
+		end,
 	},
-	-- auto-install configured servers (with lspconfig)
-	automatic_installation = true, -- not the same as ensure_installed
-})
-
-mason_null_ls.setup({
-	-- list of formatters & linters for mason to install
-	ensure_installed = {
-		"prettier", -- ts/js formatter
-		"stylua", -- lua formatter
-		"eslint_d", -- ts/js linter
-		"clang_format", -- clang formatter
+	{
+		"mason-org/mason-lspconfig.nvim",
+		dependencies = {
+			"mason-org/mason.nvim",
+			"neovim/nvim-lspconfig",
+		},
+		config = function()
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"cssls",
+					"cssmodules_ls",
+					"denols",
+					"emmet_ls",
+					"gopls",
+					"html",
+					"jsonls",
+					"lua_ls",
+					"marksman",
+					"rust_analyzer",
+					"tailwindcss",
+					"taplo",
+					"ts_ls",
+					"volar",
+					"yamlls",
+					"buf_ls",
+				},
+			})
+		end,
 	},
-	-- auto-install configured formatters & linters (with null-ls)
-	automatic_installation = true,
-})
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = { "mason-org/mason.nvim" },
+		config = function()
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					"prettier",
+					"stylua",
+					"eslint_d",
+					"clang-format",
+				},
+				auto_update = false,
+				run_on_start = true,
+			})
+		end,
+	},
+}

@@ -1,213 +1,175 @@
--- import lspconfig plugin safely
-local lspconfig_status, lspconfig = pcall(require, "lspconfig")
-if not lspconfig_status then
-	return
-end
-
--- import cmp-nvim-lsp plugin safely
-local cmp_nvim_lsp_status, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not cmp_nvim_lsp_status then
-	return
-end
-
--- import typescript plugin safely
-local typescript_setup, typescript = pcall(require, "typescript")
-if not typescript_setup then
-	return
-end
-
-local keymap = vim.keymap -- for conciseness
-
--- enable keybinds only for when lsp server available
-local on_attach = function(client, bufnr)
-	-- inlay hints
-	vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-
-	-- keybind options
-	local opts = { noremap = true, silent = true, buffer = bufnr }
-
-	-- set keybinds
-	keymap.set("n", "gf", "<cmd>Lspsaga lsp_finder<CR>", opts) -- show definition, references
-	keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts) -- got to declaration
-	keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>", opts) -- see definition and make edits in window
-	keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts) -- go to implementation
-	keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
-	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
-	keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics<CR>", opts) -- show  diagnostics for line
-	keymap.set("n", "<leader>d", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts) -- show diagnostics for cursor
-	keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
-	keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
-	keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
-	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
-
-	-- typescript specific keymaps (e.g. rename file and update imports)
-	if client.name == "tsserver" then
-		keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>") -- rename file and update imports
-		keymap.set("n", "<leader>oi", ":TypescriptOrganizeImports<CR>") -- organize imports (not in youtube nvim video)
-		keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>") -- remove unused variables (not in youtube nvim video)
-	end
-end
-
--- used to enable autocompletion (assign to every lsp server config)
-local capabilities = cmp_nvim_lsp.default_capabilities()
-
--- Change the Diagnostic symbols in the sign column (gutter)
--- (not in youtube nvim video)
-local signs = { Error = " ", Warn = " ", Hint = "ﴞ ", Info = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
-
--- configure html server
-lspconfig["html"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
--- configure rust server
-lspconfig["rust_analyzer"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	diagnostics = true,
-	settings = {
-		-- enable clippy on save
-		checkOnSave = {
-			command = "clippy",
-		},
-		["rust_analyzer"] = {
-			completion = {
-				autoself = { enable = true },
-				postfix = { enable = true },
-			},
-			diagnostics = { enable = true },
-			inlayHints = {
-				lifetimeElisionHints = {
-					enable = true,
-					useParameterNames = true,
-				},
-				reborrowHints = { enable = true },
-				typeHints = { enable = true },
-				closureReturnTypeHints = { enable = "always" },
-			},
-			highlightRelated = {
-				references = { enable = true },
-			},
-		},
+return {
+	"neovim/nvim-lspconfig",
+	event = { "BufReadPre", "BufNewFile" },
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
 	},
-})
+	config = function()
+		local lspconfig = require("lspconfig")
+		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local capabilities = cmp_nvim_lsp.default_capabilities()
 
--- configure typescript server with plugin
-typescript.setup({
-	server = {
-		capabilities = capabilities,
-		on_attach = on_attach,
-	},
-})
-
--- configure css server
-lspconfig["cssls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
--- configure tailwindcss server
-lspconfig["tailwindcss"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
--- configure emmet language server
-lspconfig["emmet_ls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-})
-
--- configure lua server (with special settings)
-lspconfig["lua_ls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	settings = { -- custom settings for lua
-		Lua = {
-			-- make the language server recognize "vim" global
-			diagnostics = {
-				globals = { "vim" },
-			},
-			workspace = {
-				-- make language server aware of runtime files
-				library = {
-					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-					[vim.fn.stdpath("config") .. "/lua"] = true,
+		vim.diagnostic.config({
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = "",
+					[vim.diagnostic.severity.WARN] = "",
+					[vim.diagnostic.severity.HINT] = "󰠠",
+					[vim.diagnostic.severity.INFO] = "",
 				},
 			},
-		},
-	},
-})
+			virtual_text = true,
+			underline = true,
+			update_in_insert = false,
+			severity_sort = true,
+			float = { border = "rounded", source = "if_many" },
+		})
 
-lspconfig["denols"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	filetypes = { "javascript", "typescript" },
-	single_file_support = true,
-	root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
-})
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+			callback = function(args)
+				local bufnr = args.buf
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-lspconfig["gopls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
+				if client and client:supports_method("textDocument/inlayHint") then
+					vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+				end
 
-	settings = {
-		gopls = {
-			["ui.inlayhint.hints"] = {
-				assignVariableTypes = true,
-				compositeLiteralFields = true,
-				functionTypeParameters = true,
-				compositeLiteralTypes = true,
-				constantValues = true,
-				parameterNames = true,
-				rangeVariableTypes = true,
+				local opts = { noremap = true, silent = true, buffer = bufnr }
+				local map = vim.keymap.set
+
+				map("n", "gf", vim.lsp.buf.references, opts)
+				map("n", "gD", vim.lsp.buf.declaration, opts)
+				map("n", "gd", vim.lsp.buf.definition, opts)
+				map("n", "gi", vim.lsp.buf.implementation, opts)
+				map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+				map("n", "<leader>rn", vim.lsp.buf.rename, opts)
+				map("n", "<leader>D", vim.diagnostic.open_float, opts)
+				map("n", "<leader>d", vim.diagnostic.open_float, opts)
+				map("n", "[d", vim.diagnostic.goto_prev, opts)
+				map("n", "]d", vim.diagnostic.goto_next, opts)
+				map("n", "K", vim.lsp.buf.hover, opts)
+				map("n", "<leader>o", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+
+				if client and client.name == "ts_ls" then
+					map("n", "<leader>oi", function()
+						vim.lsp.buf.code_action({
+							apply = true,
+							context = { only = { "source.organizeImports" }, diagnostics = {} },
+						})
+					end, opts)
+					map("n", "<leader>ru", function()
+						vim.lsp.buf.code_action({
+							apply = true,
+							context = { only = { "source.removeUnused" }, diagnostics = {} },
+						})
+					end, opts)
+				end
+			end,
+		})
+
+		lspconfig.html.setup({ capabilities = capabilities })
+
+		lspconfig.rust_analyzer.setup({
+			capabilities = capabilities,
+			settings = {
+				["rust-analyzer"] = {
+					checkOnSave = { command = "clippy" },
+					completion = {
+						autoself = { enable = true },
+						postfix = { enable = true },
+					},
+					diagnostics = { enable = true },
+					inlayHints = {
+						lifetimeElisionHints = {
+							enable = true,
+							useParameterNames = true,
+						},
+						reborrowHints = { enable = true },
+						typeHints = { enable = true },
+						closureReturnTypeHints = { enable = "always" },
+					},
+					highlightRelated = {
+						references = { enable = true },
+					},
+				},
 			},
-		},
-	},
-})
+		})
 
-lspconfig["jsonls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+		lspconfig.ts_ls.setup({ capabilities = capabilities })
+		lspconfig.cssls.setup({ capabilities = capabilities })
+		lspconfig.tailwindcss.setup({ capabilities = capabilities })
 
-lspconfig["marksman"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	filetypes = { "markdown" },
-})
+		lspconfig.emmet_ls.setup({
+			capabilities = capabilities,
+			filetypes = {
+				"html",
+				"typescriptreact",
+				"javascriptreact",
+				"css",
+				"sass",
+				"scss",
+				"less",
+				"svelte",
+			},
+		})
 
-lspconfig["volar"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+		lspconfig.lua_ls.setup({
+			capabilities = capabilities,
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						library = {
+							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+							[vim.fn.stdpath("config") .. "/lua"] = true,
+						},
+					},
+				},
+			},
+		})
 
-lspconfig["taplo"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+		lspconfig.denols.setup({
+			capabilities = capabilities,
+			filetypes = { "javascript", "typescript" },
+			single_file_support = true,
+			root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+		})
 
-lspconfig["yamlls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+		lspconfig.gopls.setup({
+			capabilities = capabilities,
+			settings = {
+				gopls = {
+					["ui.inlayhint.hints"] = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						functionTypeParameters = true,
+						compositeLiteralTypes = true,
+						constantValues = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
+					},
+				},
+			},
+		})
 
--- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428#issuecomment-997226723
-local clangd_capabilities = vim.tbl_deep_extend("keep", capabilities, {
-	offsetEncoding = { "utf-16" },
-})
-lspconfig["clangd"].setup({
-	capabilities = clangd_capabilities,
-	on_attach = on_attach,
-})
+		lspconfig.jsonls.setup({ capabilities = capabilities })
+		lspconfig.marksman.setup({
+			capabilities = capabilities,
+			filetypes = { "markdown" },
+		})
+		lspconfig.volar.setup({ capabilities = capabilities })
+		lspconfig.taplo.setup({ capabilities = capabilities })
+		lspconfig.yamlls.setup({ capabilities = capabilities })
 
-lspconfig["bufls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+		lspconfig.clangd.setup({
+			capabilities = vim.tbl_deep_extend("keep", capabilities, {
+				offsetEncoding = { "utf-16" },
+			}),
+		})
+
+		lspconfig.buf_ls.setup({ capabilities = capabilities })
+	end,
+}

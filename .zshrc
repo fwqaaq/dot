@@ -124,3 +124,26 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="/opt/homebrew/opt/e2fsprogs/bin:$PATH"
+export PATH="/opt/homebrew/opt/e2fsprogs/sbin:$PATH"
+
+# Created by `pipx` on 2026-03-21 17:15:44
+export PATH="$PATH:/Users/fwqaaq/.local/bin"
+
+# pnpm
+export PNPM_HOME="/Users/fwqaaq/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+_fix_cursor() { echo -ne '\e[2 q' }
+precmd_functions+=(_fix_cursor)
+
+zle-line-init() { echo -ne '\e[2 q' }
+zle -N zle-line-init

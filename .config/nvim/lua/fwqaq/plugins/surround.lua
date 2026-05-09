@@ -1,7 +1,8 @@
 return {
-	"lewis6991/gitsigns.nvim",
+	"kylechui/nvim-surround",
+	version = "*",
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
-		require("gitsigns").setup()
+		require("nvim-surround").setup()
 	end,
 }

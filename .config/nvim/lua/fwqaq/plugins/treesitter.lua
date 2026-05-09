@@ -1,46 +1,48 @@
--- import nvim-treesitter plugin safely
-local status, treesitter = pcall(require, "nvim-treesitter.configs")
-if not status then
-	return
-end
-
--- configure treesitter
-treesitter.setup({
-	-- enable syntax highlighting
-	highlight = {
-		enable = true,
+return {
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				highlight = { enable = true },
+				indent = { enable = true },
+				ensure_installed = {
+					"json",
+					"javascript",
+					"typescript",
+					"tsx",
+					"yaml",
+					"html",
+					"css",
+					"markdown",
+					"markdown_inline",
+					"svelte",
+					"graphql",
+					"bash",
+					"lua",
+					"vim",
+					"vimdoc",
+					"dockerfile",
+					"gitignore",
+					"toml",
+					"rust",
+					"c",
+					"go",
+				},
+				auto_install = true,
+			})
+		end,
 	},
-	-- enable indentation
-	indent = { enable = true },
-	-- enable autotagging (w/ nvim-ts-autotag plugin)
-	autotag = { enable = true },
-	-- ensure these language parsers are installed
-	ensure_installed = {
-		"json",
-		"javascript",
-		"typescript",
-		"tsx",
-		"yaml",
-		"html",
-		"css",
-		"markdown",
-		"markdown_inline",
-		"svelte",
-		"graphql",
-		"bash",
-		"lua",
-		"vim",
-		"dockerfile",
-		"gitignore",
-		"toml",
-		"rust",
-		"c",
+	{
+		"windwp/nvim-ts-autotag",
+		event = "InsertEnter",
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
 	},
-	-- auto install above language parsers
-	auto_install = true,
-	rainbow = {
-		enable = true,
-		extended_mode = true,
-		max_file_lines = 1000,
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 	},
-})
+}
