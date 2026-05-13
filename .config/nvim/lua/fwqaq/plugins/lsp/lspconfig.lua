@@ -5,10 +5,12 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
-		local lspconfig = require("lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+		-- Apply cmp capabilities to every server as the default.
+		vim.lsp.config("*", { capabilities = capabilities })
+
+		-- Diagnostic appearance
 		vim.diagnostic.config({
 			signs = {
 				text = {
@@ -25,8 +27,9 @@ return {
 			float = { border = "rounded", source = "if_many" },
 		})
 
+		-- Keymaps and inlay hints — set once per buffer on attach
 		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+			group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 			callback = function(args)
 				local bufnr = args.buf
 				local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -68,10 +71,11 @@ return {
 			end,
 		})
 
-		lspconfig.html.setup({ capabilities = capabilities })
+		-- ── Per-server overrides ─────────────────────────────────────────────
+		-- Only settings that differ from the server's built-in defaults are
+		-- listed here.  Capabilities are already set globally above.
 
-		lspconfig.rust_analyzer.setup({
-			capabilities = capabilities,
+		vim.lsp.config("rust_analyzer", {
 			settings = {
 				["rust-analyzer"] = {
 					checkOnSave = { command = "clippy" },
@@ -96,31 +100,10 @@ return {
 			},
 		})
 
-		lspconfig.ts_ls.setup({ capabilities = capabilities })
-		lspconfig.cssls.setup({ capabilities = capabilities })
-		lspconfig.tailwindcss.setup({ capabilities = capabilities })
-
-		lspconfig.emmet_ls.setup({
-			capabilities = capabilities,
-			filetypes = {
-				"html",
-				"typescriptreact",
-				"javascriptreact",
-				"css",
-				"sass",
-				"scss",
-				"less",
-				"svelte",
-			},
-		})
-
-		lspconfig.lua_ls.setup({
-			capabilities = capabilities,
+		vim.lsp.config("lua_ls", {
 			settings = {
 				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
+					diagnostics = { globals = { "vim" } },
 					workspace = {
 						library = {
 							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -131,15 +114,7 @@ return {
 			},
 		})
 
-		lspconfig.denols.setup({
-			capabilities = capabilities,
-			filetypes = { "javascript", "typescript" },
-			single_file_support = true,
-			root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
-		})
-
-		lspconfig.gopls.setup({
-			capabilities = capabilities,
+		vim.lsp.config("gopls", {
 			settings = {
 				gopls = {
 					["ui.inlayhint.hints"] = {
@@ -155,21 +130,68 @@ return {
 			},
 		})
 
-		lspconfig.jsonls.setup({ capabilities = capabilities })
-		lspconfig.marksman.setup({
-			capabilities = capabilities,
+		vim.lsp.config("emmet_ls", {
+			filetypes = {
+				"html",
+				"typescriptreact",
+				"javascriptreact",
+				"css",
+				"sass",
+				"scss",
+				"less",
+				"svelte",
+			},
+		})
+
+		vim.lsp.config("marksman", {
 			filetypes = { "markdown" },
 		})
-		lspconfig.volar.setup({ capabilities = capabilities })
-		lspconfig.taplo.setup({ capabilities = capabilities })
-		lspconfig.yamlls.setup({ capabilities = capabilities })
 
-		lspconfig.clangd.setup({
+		-- Deno: only attaches when deno.json / deno.jsonc is present
+		vim.lsp.config("denols", {
+			filetypes = { "javascript", "typescript" },
+			single_file_support = true,
+			root_dir = function(fname)
+				return vim.fs.root(fname, { "deno.json", "deno.jsonc" })
+			end,
+		})
+
+		-- ts_ls: skip attach when the project is a Deno project
+		vim.lsp.config("ts_ls", {
+			root_dir = function(fname)
+				if vim.fs.root(fname, { "deno.json", "deno.jsonc" }) then
+					return nil
+				end
+				return vim.fs.root(fname, { "package.json", "tsconfig.json", ".git" })
+			end,
+		})
+
+		-- clangd requires a specific offset encoding to avoid conflicts
+		vim.lsp.config("clangd", {
 			capabilities = vim.tbl_deep_extend("keep", capabilities, {
 				offsetEncoding = { "utf-16" },
 			}),
 		})
 
-		lspconfig.buf_ls.setup({ capabilities = capabilities })
+		-- ── Enable servers ───────────────────────────────────────────────────
+		vim.lsp.enable({
+			"html",
+			"cssls",
+			"cssmodules_ls",
+			"tailwindcss",
+			"emmet_ls",
+			"ts_ls",
+			"denols",
+			"volar",
+			"jsonls",
+			"yamlls",
+			"taplo",
+			"lua_ls",
+			"rust_analyzer",
+			"gopls",
+			"clangd",
+			"buf_ls",
+			"marksman",
+		})
 	end,
 }
