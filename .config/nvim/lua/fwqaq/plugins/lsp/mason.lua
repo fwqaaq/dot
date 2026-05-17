@@ -37,7 +37,7 @@ return {
 					"tailwindcss",
 					"taplo",
 					"ts_ls",
-					"volar",
+					"vue_ls",
 					"yamlls",
 					"buf_ls",
 				},

@@ -182,7 +182,7 @@ return {
 			"emmet_ls",
 			"ts_ls",
 			"denols",
-			"volar",
+			"vue_ls",
 			"jsonls",
 			"yamlls",
 			"taplo",
